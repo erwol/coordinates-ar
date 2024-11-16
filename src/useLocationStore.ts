@@ -1,11 +1,12 @@
 import { create } from "zustand";
 
-type PermissionState =
-  | "notRequested"
-  | "requested"
-  | "error"
-  | "denied"
-  | "accepted";
+export enum PermissionState {
+  Waiting = "waiting",
+  Requested = "requested",
+  Error = "error",
+  Denied = "denied",
+  Accepted = "accepted",
+}
 
 interface Location {
   latitude: number;
@@ -23,23 +24,22 @@ interface LocationStore {
 }
 
 export const useLocationStore = create<LocationStore>((set) => ({
-  permissionState: "notRequested",
+  permissionState: PermissionState.Waiting,
   watchId: null,
   location: null,
   error: null,
   requestPermissionAndTrack: () => {
     if (!navigator.geolocation) {
       set({
-        permissionState: "error",
+        permissionState: PermissionState.Error,
         error: "Su navegador no soporta geolocalización.",
       });
       return;
     }
-
     const watchId = navigator.geolocation.watchPosition(
       (position) => {
         set({
-          permissionState: "accepted",
+          permissionState: PermissionState.Accepted,
           watchId,
           location: {
             latitude: position.coords.latitude,
@@ -50,8 +50,9 @@ export const useLocationStore = create<LocationStore>((set) => ({
         });
       },
       (error) => {
-        let permissionState: PermissionState = "error";
-        if (error.code === error.PERMISSION_DENIED) permissionState = "denied";
+        let permissionState = PermissionState.Error;
+        if (error.code === error.PERMISSION_DENIED)
+          permissionState = PermissionState.Denied;
 
         set({
           permissionState,
@@ -77,7 +78,7 @@ export const useLocationStore = create<LocationStore>((set) => ({
     }
     set({
       watchId: null,
-      permissionState: "requested", // Reset to initial state
+      permissionState: PermissionState.Waiting,
       location: null,
       error: null,
     });

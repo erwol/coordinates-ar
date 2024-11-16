@@ -1,18 +1,23 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import "./App.css";
-import { useLocationStore } from "./useLocationStore";
+import { PermissionState, useLocationStore } from "./useLocationStore";
 
 function App() {
-  const { requestPermissionAndTrack, permissionState, watchId, location } =
-    useLocationStore();
+  const {
+    requestPermissionAndTrack,
+    stopTracking,
+    permissionState,
+    watchId,
+    location,
+  } = useLocationStore();
 
-  useEffect(() => {
-    if (permissionState === "notRequested") {
-      if (confirm("¿Quieres compartir tu ubicación?")) {
-        requestPermissionAndTrack();
-      }
-    }
-  }, [permissionState, requestPermissionAndTrack]);
+  const handleStartDemo = useCallback(() => {
+    requestPermissionAndTrack();
+  }, [requestPermissionAndTrack]);
+
+  const handleStopDemo = useCallback(() => {
+    stopTracking();
+  }, [stopTracking]);
 
   useEffect(() => {
     return () => {
@@ -25,17 +30,32 @@ function App() {
   return (
     <div className="App">
       <h1>Coordinates AR demo</h1>
+      {permissionState === PermissionState.Waiting && (
+        <button onClick={handleStartDemo}>Start demo</button>
+      )}
+      {permissionState === PermissionState.Accepted && (
+        <button onClick={handleStopDemo}>Stop demo</button>
+      )}
       <ul style={{ textAlign: "left" }}>
-        <li>Permission state: {permissionState}</li>
         <li>
-          Current coordinates:
-          <ul>
-            <li>Longitude: {location?.longitude}</li>
-            <li>Latitude: {location?.latitude}</li>
-            <li>Timestamp: {location?.timestamp}</li>
-            <li>Watch id: {watchId}</li>
-          </ul>
+          Permission state:
+          <b
+            style={{ color: permissionState === "accepted" ? "green" : "red" }}
+          >
+            {` ${permissionState}`}
+          </b>
         </li>
+        {permissionState === PermissionState.Accepted && (
+          <li>
+            Current coordinates:
+            <ul>
+              <li>Longitude: {location?.longitude}</li>
+              <li>Latitude: {location?.latitude}</li>
+              <li>Timestamp: {location?.timestamp}</li>
+              <li>Watch id: {watchId}</li>
+            </ul>
+          </li>
+        )}
       </ul>
     </div>
   );
