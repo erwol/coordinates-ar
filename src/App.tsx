@@ -3,6 +3,7 @@ import "./App.css";
 import { PermissionState, useLocationStore } from "./useLocationStore";
 import { useObjectStore } from "./useObjectsStore";
 import { distanceBetweenCoordinates } from "./helpers/distanceBetweenCoordinates";
+import { ARDemo } from "./ArDemo";
 
 function App() {
   const {
@@ -39,6 +40,7 @@ function App() {
   return (
     <div className="App">
       <h1>Coordinates AR demo</h1>
+      <ARDemo />
       {permissionState === PermissionState.Waiting && (
         <button onClick={handleStartDemo}>Start demo</button>
       )}
