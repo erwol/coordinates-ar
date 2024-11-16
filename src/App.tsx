@@ -1,6 +1,8 @@
 import { useCallback, useEffect } from "react";
 import "./App.css";
 import { PermissionState, useLocationStore } from "./useLocationStore";
+import { useObjectStore } from "./useObjectsStore";
+import { distanceBetweenCoordinates } from "./helpers/distanceBetweenCoordinates";
 
 function App() {
   const {
@@ -10,6 +12,7 @@ function App() {
     watchId,
     location,
   } = useLocationStore();
+  const { generateObjects, objects } = useObjectStore();
 
   const handleStartDemo = useCallback(() => {
     requestPermissionAndTrack();
@@ -26,6 +29,12 @@ function App() {
       }
     };
   }, [watchId]);
+
+  useEffect(() => {
+    if (location && objects.length === 0) {
+      generateObjects(location);
+    }
+  }, [location, objects, generateObjects]);
 
   return (
     <div className="App">
@@ -56,6 +65,38 @@ function App() {
             </ul>
           </li>
         )}
+        {permissionState === PermissionState.Accepted &&
+          location &&
+          objects.length > 0 && (
+            <li>
+              Objects around you:
+              <ul>
+                {objects.map((object) => (
+                  <li key={object.id}>
+                    Name: {object.name}
+                    <ul>
+                      <li>Longitude: {object.coordinate.longitude}</li>
+                      <li>Latitude: {object.coordinate.latitude}</li>
+                      <li>
+                        Distance:{" "}
+                        {distanceBetweenCoordinates(
+                          {
+                            latitude: location.latitude,
+                            longitude: location.longitude,
+                          },
+                          {
+                            latitude: object.coordinate.latitude,
+                            longitude: object.coordinate.longitude,
+                          },
+                        ).toFixed(2)}
+                        {" meters"}
+                      </li>
+                    </ul>
+                  </li>
+                ))}
+              </ul>
+            </li>
+          )}
       </ul>
     </div>
   );
