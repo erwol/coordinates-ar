@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import "./App.css";
 import { useLocationStore } from "./useLocationStore";
 
@@ -12,7 +12,7 @@ function App() {
         requestPermissionAndTrack();
       }
     }
-  }, [permissionState]);
+  }, [permissionState, requestPermissionAndTrack]);
 
   useEffect(() => {
     return () => {
@@ -21,6 +21,7 @@ function App() {
       }
     };
   }, [watchId]);
+
   return (
     <div className="App">
       <h1>Coordinates AR demo</h1>
