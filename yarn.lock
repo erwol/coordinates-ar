@@ -873,7 +873,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-three/xr@npm:latest":
+"@react-three/xr@npm:^6.4.10":
   version: 6.4.10
   resolution: "@react-three/xr@npm:6.4.10"
   dependencies:
@@ -1313,6 +1313,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vitejs/plugin-basic-ssl@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "@vitejs/plugin-basic-ssl@npm:1.1.0"
+  peerDependencies:
+    vite: ^3.0.0 || ^4.0.0 || ^5.0.0
+  checksum: 1531eed619500d65c810c8077e1cb179204a303c7dea1cfff4de4959e29c397e1dc7a1d4b9feea2b87648a78a7b555108abc4b1c66923d89e699e9d717ea3a9a
+  languageName: node
+  linkType: hard
+
 "@vitejs/plugin-react@npm:^4.3.3":
   version: 4.3.3
   resolution: "@vitejs/plugin-react@npm:4.3.3"
@@ -1663,9 +1672,10 @@ __metadata:
     "@eslint/js": ^9.13.0
     "@react-three/drei": ^9.116.3
     "@react-three/fiber": ^8.17.10
-    "@react-three/xr": latest
+    "@react-three/xr": ^6.4.10
     "@types/react": ^18.3.12
     "@types/react-dom": ^18.3.1
+    "@vitejs/plugin-basic-ssl": ^1.1.0
     "@vitejs/plugin-react": ^4.3.3
     eslint: ^9.13.0
     eslint-config-prettier: ^9.1.0
