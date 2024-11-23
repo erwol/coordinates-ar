@@ -1,9 +1,11 @@
 import { Canvas } from "@react-three/fiber";
 import { XR, createXRStore } from "@react-three/xr";
+import { useState } from "react";
 
 const store = createXRStore({
   controller: false,
   hitTest: true,
+  depthSensing: true,
 });
 
 // const TexturedPlane = () => {
@@ -74,20 +76,20 @@ const store = createXRStore({
 // };
 
 export function ARApp() {
-  //const [red, setRed] = useState(false);
+  const [red, setRed] = useState(false);
   return (
     <>
       <button onClick={() => store.enterAR()}>Enter AR</button>
       <Canvas>
         <XR store={store}>
-          {/* <mesh
+          <mesh
             pointerEventsType={{ deny: "grab" }}
             onClick={() => setRed(!red)}
-            position={[0, 1, -1]}
+            position={[0, 1, -3]}
           >
-            <boxGeometry />
+            <boxGeometry args={[1, 2, 0.2]} />
             <meshBasicMaterial color={red ? "red" : "blue"} />
-          </mesh> */}
+          </mesh>
           {/* <TexturedPlane /> */}
         </XR>
       </Canvas>
