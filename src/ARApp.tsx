@@ -39,7 +39,7 @@ const TexturedPlane = () => {
   }
 
   return (
-    <mesh position={[0, 1, -1]}>
+    <mesh position={[0, 1, -5]}>
       <boxGeometry args={[2, 3, 0.1]} />
       {/* Material using the generated texture */}
       <meshBasicMaterial map={textureRef.current} />
