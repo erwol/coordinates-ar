@@ -1,7 +1,8 @@
 import { Canvas } from "@react-three/fiber";
-import { XR, XRDomOverlay, createXRStore } from "@react-three/xr";
-import { useState } from "react";
-import { Anchor } from "./ARAnchor";
+import { XR, createXRStore } from "@react-three/xr";
+import { useRef } from "react";
+
+import * as THREE from "three";
 
 const store = createXRStore({
   //controller: false,
@@ -9,47 +10,51 @@ const store = createXRStore({
   depthSensing: true,
 });
 
-// const TexturedPlane = () => {
-//   const textureRef = useRef<THREE.CanvasTexture>();
+const TexturedPlane = () => {
+  const textureRef = useRef<THREE.CanvasTexture>();
 
-//   // Create a canvas and draw text on it
-//   const createTextTexture = () => {
-//     const canvas = document.createElement("canvas") as HTMLCanvasElement;
-//     const context = canvas.getContext("2d") as CanvasRenderingContext2D;
-//     canvas.width = 512;
-//     canvas.height = 512;
+  // Create a canvas and draw text on it
+  const createTextTexture = () => {
+    const canvas = document.createElement("canvas") as HTMLCanvasElement;
+    const context = canvas.getContext("2d") as CanvasRenderingContext2D;
+    canvas.width = 512;
+    canvas.height = 512;
 
-//     // Draw background
-//     context.fillStyle = "black";
-//     context.fillRect(0, 0, canvas.width, canvas.height);
+    // Draw background
+    context.fillStyle = "black";
+    context.fillRect(0, 0, canvas.width, canvas.height);
 
-//     // Draw text
-//     context.fillStyle = "white";
-//     context.font = "48px Arial";
-//     context.textAlign = "center";
-//     context.textBaseline = "middle";
-//     context.fillText(
-//       "Hello, React Three Fiber!",
-//       canvas.width / 2,
-//       canvas.height / 2,
-//     );
+    // Draw text
+    context.fillStyle = "white";
+    context.font = "48px Arial";
+    context.textAlign = "center";
+    context.textBaseline = "middle";
+    context.fillText(
+      "Hello, React Three Fiber!",
+      canvas.width / 2,
+      canvas.height / 2,
+    );
 
-//     return new THREE.CanvasTexture(canvas);
-//   };
+    return new THREE.CanvasTexture(canvas);
+  };
 
-//   // Assign the texture to a ref
-//   if (!textureRef.current) {
-//     textureRef.current = createTextTexture();
-//   }
+  // Assign the texture to a ref
+  if (!textureRef.current) {
+    textureRef.current = createTextTexture();
+  }
 
-//   return (
-//     <mesh position={[0, 1, -5]}>
-//       <boxGeometry args={[2, 3, 0.1]} />
-//       {/* Material using the generated texture */}
-//       <meshBasicMaterial map={textureRef.current} />
-//     </mesh>
-//   );
-// };
+  return (
+    <mesh position={[0, 1, -3]} pointerEventsType={{ deny: "grab" }}>
+      <boxGeometry args={[1, 2, 0.2]} />
+      {/* Material using the generated texture */}
+      <meshBasicMaterial
+        map={textureRef.current}
+        // side={THREE.DoubleSide}
+        color={"black"}
+      />
+    </mesh>
+  );
+};
 
 // const AnchoredCube = () => {
 //   const [anchor, setAnchor] = useState(null);
@@ -77,43 +82,23 @@ const store = createXRStore({
 // };
 
 export function ARApp() {
-  const [red, setRed] = useState(false);
-  const [bool, setBool] = useState(false);
+  // const [red, setRed] = useState(false);
+  // const [bool, setBool] = useState(false);
 
   return (
     <>
       <button onClick={() => store.enterAR()}>Enter AR</button>
       <Canvas>
         <XR store={store}>
-          <mesh
+          {/* <mesh
             pointerEventsType={{ deny: "grab" }}
             onClick={() => setRed(!red)}
             position={[0, 1, -3]}
           >
             <boxGeometry args={[1, 2, 0.2]} />
-            <meshBasicMaterial color={red ? "red" : "blue"} />
-          </mesh>
-          <Anchor />
-          <XRDomOverlay
-            style={{
-              width: "100%",
-              height: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <div
-              style={{
-                backgroundColor: bool ? "red" : "green",
-                padding: "1rem 2rem",
-              }}
-              onClick={() => setBool((b) => !b)}
-            >
-              Hello World
-            </div>
-          </XRDomOverlay>
-          {/* <TexturedPlane /> */}
+            <meshBasicMaterial color={"black"} />
+          </mesh> */}
+          <TexturedPlane />
         </XR>
       </Canvas>
     </>
