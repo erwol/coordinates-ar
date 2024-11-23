@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Anchor } from "./ARAnchor";
 
 const store = createXRStore({
-  controller: false,
+  //controller: false,
   hitTest: true,
   depthSensing: true,
 });
