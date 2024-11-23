@@ -1,6 +1,7 @@
 import { Canvas } from "@react-three/fiber";
 import { XR, createXRStore } from "@react-three/xr";
 import { useState } from "react";
+import { Anchor } from "./ARAnchor";
 
 const store = createXRStore({
   controller: false,
@@ -90,6 +91,7 @@ export function ARApp() {
             <boxGeometry args={[1, 2, 0.2]} />
             <meshBasicMaterial color={red ? "red" : "blue"} />
           </mesh>
+          <Anchor />
           {/* <TexturedPlane /> */}
         </XR>
       </Canvas>
