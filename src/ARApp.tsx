@@ -1,6 +1,6 @@
 import { Canvas } from "@react-three/fiber";
 import { XR, createXRStore } from "@react-three/xr";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import * as THREE from "three";
 
 const store = createXRStore();
@@ -47,21 +47,29 @@ const TexturedPlane = () => {
   );
 };
 
+// const FixedCube = () => {
+//   return (
+//     <Box position={[0, 1, -3]} args={[1, 1, 1]}>
+//       <meshStandardMaterial color="blue" />
+//     </Box>
+//   );
+// };
+
 export function ARApp() {
-  //const [red, setRed] = useState(false);
+  const [red, setRed] = useState(false);
   return (
     <>
       <button onClick={() => store.enterAR()}>Enter AR</button>
       <Canvas>
         <XR store={store}>
-          {/* <mesh
+          <mesh
             pointerEventsType={{ deny: "grab" }}
             onClick={() => setRed(!red)}
             position={[0, 1, -1]}
           >
             <boxGeometry />
             <meshBasicMaterial color={red ? "red" : "blue"} />
-          </mesh> */}
+          </mesh>
           <TexturedPlane />
         </XR>
       </Canvas>
