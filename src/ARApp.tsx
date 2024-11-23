@@ -1,5 +1,5 @@
 import { Canvas } from "@react-three/fiber";
-import { XR, createXRStore } from "@react-three/xr";
+import { XR, XRDomOverlay, createXRStore } from "@react-three/xr";
 import { useState } from "react";
 import { Anchor } from "./ARAnchor";
 
@@ -78,6 +78,8 @@ const store = createXRStore({
 
 export function ARApp() {
   const [red, setRed] = useState(false);
+  const [bool, setBool] = useState(false);
+
   return (
     <>
       <button onClick={() => store.enterAR()}>Enter AR</button>
@@ -92,6 +94,25 @@ export function ARApp() {
             <meshBasicMaterial color={red ? "red" : "blue"} />
           </mesh>
           <Anchor />
+          <XRDomOverlay
+            style={{
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <div
+              style={{
+                backgroundColor: bool ? "red" : "green",
+                padding: "1rem 2rem",
+              }}
+              onClick={() => setBool((b) => !b)}
+            >
+              Hello World
+            </div>
+          </XRDomOverlay>
           {/* <TexturedPlane /> */}
         </XR>
       </Canvas>
