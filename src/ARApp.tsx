@@ -44,12 +44,18 @@ const TexturedPlane = () => {
   }
 
   return (
-    <mesh position={[0, 1, -3]} pointerEventsType={{ deny: "grab" }}>
-      {/* <boxGeometry args={[1, 2, 0.2]} /> */}
-      <planeGeometry args={[1, 2, 0.2]} />
+    // <mesh position={[0, 1, -3]} pointerEventsType={{ deny: "grab" }}>
+    //   {/* <boxGeometry args={[1, 2, 0.2]} /> */}
+    //   <planeGeometry args={[1, 2, 0.2]} />
 
+    //   {/* Material using the generated texture */}
+    //   <meshBasicMaterial map={textureRef.current} side={THREE.DoubleSide} />
+    // </mesh>
+    <mesh position={[0, 1, -3]}>
+      {/* A simple plane geometry */}
+      <planeGeometry args={[5, 5]} />
       {/* Material using the generated texture */}
-      <meshBasicMaterial map={textureRef.current} side={THREE.DoubleSide} />
+      <meshBasicMaterial map={textureRef.current} />
     </mesh>
   );
 };
