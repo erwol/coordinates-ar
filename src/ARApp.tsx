@@ -1,7 +1,8 @@
-import { Canvas, useLoader, useThree } from "@react-three/fiber";
-import { createXRStore, XR, XRDomOverlay } from "@react-three/xr";
+import { Canvas, useLoader } from "@react-three/fiber";
+import { createXRStore, XR } from "@react-three/xr";
 import { TextureLoader } from "three";
 import * as THREE from "three";
+import { RedWalls } from "./RedWalls";
 
 const store = createXRStore({
   //controller: false,
@@ -123,7 +124,8 @@ export function ARApp() {
       <Canvas>
         <XR store={store}>
           <ImagePlane url="/cuelgamuros.png" />
-          <ScreenshotButton />
+          <RedWalls />
+          {/* <ScreenshotButton /> */}
         </XR>
 
         {/* <OrbitControls /> */}
@@ -132,45 +134,45 @@ export function ARApp() {
   );
 }
 
-function ScreenshotButton() {
-  const { gl, scene, camera } = useThree();
+// function ScreenshotButton() {
+//   const { gl, scene, camera } = useThree();
 
-  const takeScreenshot = () => {
-    // Render the current scene to a data URL
-    gl.render(scene, camera);
-    const screenshotURL = gl.domElement.toDataURL("image/png");
+//   const takeScreenshot = () => {
+//     // Render the current scene to a data URL
+//     gl.render(scene, camera);
+//     const screenshotURL = gl.domElement.toDataURL("image/png");
 
-    // Create a link to download the image
-    const link = document.createElement("a");
-    link.href = screenshotURL;
-    link.download = "debería desaparecer.png";
-    link.click();
-  };
+//     // Create a link to download the image
+//     const link = document.createElement("a");
+//     link.href = screenshotURL;
+//     link.download = "debería desaparecer.png";
+//     link.click();
+//   };
 
-  return (
-    <XRDomOverlay>
-      <div
-        style={{
-          position: "absolute",
-          bottom: "100px",
-          left: "50%",
-          transform: "translateX(-50%)",
-        }}
-      >
-        <button
-          onClick={takeScreenshot}
-          style={{
-            padding: "10px 20px",
-            fontSize: "16px",
-            backgroundColor: "lightblue",
-            border: "none",
-            borderRadius: "5px",
-            cursor: "pointer",
-          }}
-        >
-          Take Screenshot
-        </button>
-      </div>
-    </XRDomOverlay>
-  );
-}
+//   return (
+//     <XRDomOverlay>
+//       <div
+//         style={{
+//           position: "absolute",
+//           bottom: "100px",
+//           left: "50%",
+//           transform: "translateX(-50%)",
+//         }}
+//       >
+//         <button
+//           onClick={takeScreenshot}
+//           style={{
+//             padding: "10px 20px",
+//             fontSize: "16px",
+//             backgroundColor: "lightblue",
+//             border: "none",
+//             borderRadius: "5px",
+//             cursor: "pointer",
+//           }}
+//         >
+//           Take Screenshot
+//         </button>
+//       </div>
+//     </XRDomOverlay>
+//   );
+// }
