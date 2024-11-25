@@ -1,6 +1,5 @@
-import { Html } from "@react-three/drei";
 import { Canvas, useLoader, useThree } from "@react-three/fiber";
-import { createXRStore, XR } from "@react-three/xr";
+import { createXRStore, XR, XRDomOverlay } from "@react-three/xr";
 import { TextureLoader } from "three";
 import * as THREE from "three";
 
@@ -149,7 +148,7 @@ function ScreenshotButton() {
   };
 
   return (
-    <Html fullscreen>
+    <XRDomOverlay>
       <div
         style={{
           position: "absolute",
@@ -172,6 +171,6 @@ function ScreenshotButton() {
           Take Screenshot
         </button>
       </div>
-    </Html>
+    </XRDomOverlay>
   );
 }
