@@ -1,6 +1,6 @@
-import { Html, OrbitControls } from "@react-three/drei";
+import { Html } from "@react-three/drei";
 import { Canvas, useLoader, useThree } from "@react-three/fiber";
-import { createXRStore } from "@react-three/xr";
+import { createXRStore, XR } from "@react-three/xr";
 import { TextureLoader } from "three";
 import * as THREE from "three";
 
@@ -128,12 +128,12 @@ export function ARApp() {
         }}
       >
         <Canvas>
-          {/* <XR store={store}>
+          <XR store={store}>
+            <ImagePlane url="/cuelgamuros.png" />
+            <ScreenshotButton />
+          </XR>
 
-          </XR> */}
-          <ImagePlane url="/cuelgamuros.png" />
-          <ScreenshotButton />
-          <OrbitControls />
+          {/* <OrbitControls /> */}
         </Canvas>
       </div>
     </>
