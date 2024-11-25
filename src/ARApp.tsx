@@ -106,21 +106,19 @@ function ImagePlane({ url }: { url: string }) {
   const aspect = texture.image.width / texture.image.height;
 
   return (
-    <mesh>
+    <mesh position={[0, 1, -3]}>
       {/* Plane geometry to display the texture */}
-      <planeGeometry args={[aspect * 3, 3]} />
+      <planeGeometry args={[aspect * 2, 2]} />
       <meshBasicMaterial map={texture} />
     </mesh>
   );
 }
 
 export function ARApp() {
-  // const [red, setRed] = useState(false);
-  // const [bool, setBool] = useState(false);
-
   return (
     <>
       <button onClick={() => store.enterAR()}>Enter AR</button>
+
       <div
         style={{
           width: "100vw",
@@ -131,17 +129,6 @@ export function ARApp() {
           <XR store={store}>
             <ImagePlane url="/cuelgamuros.png" />
           </XR>
-          {/* <CubeWithText /> */}
-          {/* <OrbitControls /> */}
-          {/* <BoxWithTextOnOneFace /> */}
-          {/* <gridHelper
-            args={[160, 10]}
-            rotation={[MathUtils.DEG2RAD * 90, 0, 0]}
-          /> */}
-          {/* <Svg position={[0, 0, -1]} src={"/test2.svg"} scale={0.25} /> */}
-          {/* <XR store={store}>
-<CubeWithText />
-</XR> */}
         </Canvas>
       </div>
     </>
