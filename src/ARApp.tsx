@@ -121,21 +121,14 @@ export function ARApp() {
     <>
       <button onClick={() => store.enterAR()}>Enter AR</button>
 
-      <div
-        style={{
-          width: "100vw",
-          height: "100vh",
-        }}
-      >
-        <Canvas>
-          <XR store={store}>
-            <ImagePlane url="/cuelgamuros.png" />
-            <ScreenshotButton />
-          </XR>
+      <Canvas>
+        <XR store={store}>
+          <ImagePlane url="/cuelgamuros.png" />
+          <ScreenshotButton />
+        </XR>
 
-          {/* <OrbitControls /> */}
-        </Canvas>
-      </div>
+        {/* <OrbitControls /> */}
+      </Canvas>
     </>
   );
 }
@@ -160,7 +153,7 @@ function ScreenshotButton() {
       <div
         style={{
           position: "absolute",
-          bottom: "20px",
+          bottom: "100px",
           left: "50%",
           transform: "translateX(-50%)",
         }}
