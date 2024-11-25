@@ -1,4 +1,4 @@
-import { Box, Text } from "@react-three/drei";
+import { Box, RenderTexture, Text } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { XR, createXRStore } from "@react-three/xr";
 
@@ -11,7 +11,12 @@ const store = createXRStore({
 const CubeWithText = () => {
   return (
     <Box position={[0, 1, -3]} args={[1, 2, 0.2]}>
-      <meshStandardMaterial color="lightblue" />
+      <meshBasicMaterial color={"black"}>
+        <RenderTexture attach="map">
+          <Text color={"white"}>hello</Text>
+        </RenderTexture>
+      </meshBasicMaterial>
+      {/* <meshStandardMaterial color="white" />
       <Text
         position={[0, 0, 1.1]} // Positioning the text on the front face
         fontSize={0.5}
@@ -20,7 +25,7 @@ const CubeWithText = () => {
         anchorY="middle"
       >
         Hello!
-      </Text>
+      </Text> */}
     </Box>
   );
 };
