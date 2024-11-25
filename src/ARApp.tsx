@@ -1,6 +1,7 @@
 import { Canvas, useLoader } from "@react-three/fiber";
 import { XR, createXRStore } from "@react-three/xr";
 import { TextureLoader } from "three";
+import * as THREE from "three";
 
 const store = createXRStore({
   //controller: false,
@@ -109,7 +110,7 @@ function ImagePlane({ url }: { url: string }) {
     <mesh position={[0, 1, -3]}>
       {/* Plane geometry to display the texture */}
       <planeGeometry args={[aspect * 2, 2]} />
-      <meshBasicMaterial map={texture} />
+      <meshBasicMaterial map={texture} side={THREE.DoubleSide} />
     </mesh>
   );
 }
