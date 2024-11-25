@@ -1,5 +1,6 @@
-import { Canvas, useLoader } from "@react-three/fiber";
-import { XR, createXRStore } from "@react-three/xr";
+import { Html, OrbitControls } from "@react-three/drei";
+import { Canvas, useLoader, useThree } from "@react-three/fiber";
+import { createXRStore } from "@react-three/xr";
 import { TextureLoader } from "three";
 import * as THREE from "three";
 
@@ -127,11 +128,57 @@ export function ARApp() {
         }}
       >
         <Canvas>
-          <XR store={store}>
-            <ImagePlane url="/cuelgamuros.png" />
-          </XR>
+          {/* <XR store={store}>
+
+          </XR> */}
+          <ImagePlane url="/cuelgamuros.png" />
+          <ScreenshotButton />
+          <OrbitControls />
         </Canvas>
       </div>
     </>
+  );
+}
+
+function ScreenshotButton() {
+  const { gl, scene, camera } = useThree();
+
+  const takeScreenshot = () => {
+    // Render the current scene to a data URL
+    gl.render(scene, camera);
+    const screenshotURL = gl.domElement.toDataURL("image/png");
+
+    // Create a link to download the image
+    const link = document.createElement("a");
+    link.href = screenshotURL;
+    link.download = "debería desaparecer.png";
+    link.click();
+  };
+
+  return (
+    <Html fullscreen>
+      <div
+        style={{
+          position: "absolute",
+          bottom: "20px",
+          left: "50%",
+          transform: "translateX(-50%)",
+        }}
+      >
+        <button
+          onClick={takeScreenshot}
+          style={{
+            padding: "10px 20px",
+            fontSize: "16px",
+            backgroundColor: "lightblue",
+            border: "none",
+            borderRadius: "5px",
+            cursor: "pointer",
+          }}
+        >
+          Take Screenshot
+        </button>
+      </div>
+    </Html>
   );
 }
