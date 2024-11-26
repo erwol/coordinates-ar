@@ -123,7 +123,7 @@ export function ARApp() {
 
       <Canvas>
         <XR store={store}>
-          <ImagePlane url="/cuelgamuros2.png" />
+          <ImagePlane url="/arco.png" />
           <RedWalls />
           {/* <ScreenshotButton /> */}
         </XR>
