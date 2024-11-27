@@ -5,6 +5,7 @@ import * as THREE from "three";
 import { RedWalls } from "./RedWalls";
 import { useEffect, useState } from "react";
 import { AR_ITEMS } from "./constants";
+import logo from "./logo.svg";
 
 const store = createXRStore({
   //controller: false,
@@ -129,7 +130,26 @@ export function ARApp() {
 
   return (
     <>
-      <button onClick={() => store.enterAR()}>Enter AR</button>
+      <div
+        style={{
+          position: "fixed",
+          background: "#242424",
+          top: "0",
+          right: "0",
+          left: "0",
+          bottom: "0",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          zIndex: "2",
+          flexDirection: "column",
+          gap: "18px",
+        }}
+      >
+        <img src={logo} alt="logo" style={{ marginBottom: "50px" }} />
+        <button onClick={() => store.enterAR()}>Accede a la experiencia</button>
+        <small>*Disponible en Chrome para Android</small>
+      </div>
 
       <Canvas>
         <XR store={store}>
