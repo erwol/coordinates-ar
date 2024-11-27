@@ -3,6 +3,8 @@ import { createXRStore, XR } from "@react-three/xr";
 import { TextureLoader } from "three";
 import * as THREE from "three";
 import { RedWalls } from "./RedWalls";
+import { useEffect, useState } from "react";
+import { AR_ITEMS } from "./constants";
 
 const store = createXRStore({
   //controller: false,
@@ -117,18 +119,23 @@ function ImagePlane({ url }: { url: string }) {
 }
 
 export function ARApp() {
+  const [src, setSrc] = useState("");
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const item = AR_ITEMS.find((item) => item.name === params.get("space"));
+    setSrc(item?.src || AR_ITEMS[0].src);
+  }, []);
+
   return (
     <>
       <button onClick={() => store.enterAR()}>Enter AR</button>
 
       <Canvas>
         <XR store={store}>
-          <ImagePlane url="/arco.png" />
+          <ImagePlane url={src} />
           <RedWalls />
-          {/* <ScreenshotButton /> */}
         </XR>
-
-        {/* <OrbitControls /> */}
       </Canvas>
     </>
   );
