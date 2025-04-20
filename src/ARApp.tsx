@@ -108,15 +108,16 @@ const ImagePlane = ({ src, audioSrc }: { src: string; audioSrc?: string }) => {
 };
 
 const ENABLE_AR = true;
-
+const ENABLE_DEBUG_SOL = true;
 export function ARApp() {
   const [item, setItem] = useState<GeoARItem>();
   const [loaded, setLoaded] = useState(ENABLE_AR ? false : true);
   const [, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // const params = new URLSearchParams(window.location.search);
-    const item = AR_ITEMS.find((item) => item.name === "sol");
+    const params = new URLSearchParams(window.location.search);
+    const spaceName = ENABLE_DEBUG_SOL ? "sol" : params.get("space");
+    const item = AR_ITEMS.find((item) => item.name === spaceName);
     setItem(item || AR_ITEMS[0]);
   }, []);
 
