@@ -1,4 +1,4 @@
-import { Canvas, useLoader } from "@react-three/fiber";
+import { Canvas, useLoader, useThree } from "@react-three/fiber";
 import { TextureLoader } from "three";
 import * as THREE from "three";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -6,11 +6,14 @@ import { AR_ITEMS } from "./constants";
 import logo from "./logo.svg";
 import { GeoARItem } from "./types";
 import { createXRStore, XR } from "@react-three/xr";
+import { OrbitControls } from "@react-three/drei";
 
 const store = createXRStore({
   hitTest: true,
   depthSensing: true,
 });
+
+const CUBE_BACKGROUND_COLOR = "#323234";
 
 const Loader = ({ onClick }: { onClick: () => void }) => (
   <div
@@ -40,44 +43,75 @@ const Loader = ({ onClick }: { onClick: () => void }) => (
 );
 
 const ImagePlane = ({ src, audioSrc }: { src: string; audioSrc?: string }) => {
+  const { camera } = useThree();
+
   const texture = useLoader(TextureLoader, src);
   const aspect = texture.image.width / texture.image.height;
 
   const listener = useRef<THREE.AudioListener>(new THREE.AudioListener());
-  const [sound] = useState(() => new THREE.Audio(listener.current));
-  const audioBuffer = useLoader(THREE.AudioLoader, src);
+  const soundRef = useRef(new THREE.PositionalAudio(listener.current));
+  const audioBuffer = useLoader(THREE.AudioLoader, audioSrc || "");
 
   useEffect(() => {
-    if (!audioSrc) {
-      return;
+    camera.add(listener.current);
+  }, [camera]);
+
+  useEffect(() => {
+    if (soundRef.current && audioBuffer) {
+      soundRef.current.setBuffer(audioBuffer);
+      soundRef.current.setLoop(false);
+      soundRef.current.setVolume(1);
     }
-    sound.setBuffer(audioBuffer);
-    sound.setLoop(true);
-    sound.setVolume(0.5);
-  }, [audioBuffer, sound, audioSrc]);
+  }, [audioBuffer]);
 
   const handleClick = useCallback(() => {
     if (!audioSrc) {
       return;
     }
-    if (sound.isPlaying) {
-      sound.pause();
+    if (soundRef.current.isPlaying) {
+      soundRef.current.pause();
     } else {
-      sound.play();
+      soundRef.current.play();
     }
-  }, [sound, audioSrc]);
+  }, [audioSrc]);
 
   return (
-    <mesh position={[0, 1, -3]} onClick={handleClick}>
-      <planeGeometry args={[aspect * 2, 2]} />
-      <meshBasicMaterial map={texture} side={THREE.DoubleSide} />
-    </mesh>
+    <>
+      <mesh position={[0, 1, -3]} onClick={handleClick}>
+        {/* <planeGeometry args={[aspect * 2, 2]} />
+      <meshBasicMaterial map={texture} side={THREE.DoubleSide} /> */}
+        <boxGeometry args={[aspect * 2, 2]} />
+
+        {[0, 1, 4, 5].map((i) => (
+          <meshBasicMaterial key={i} attach={`material-${i}`} map={texture} />
+        ))}
+
+        <meshBasicMaterial
+          attach="material-2"
+          args={[{ color: CUBE_BACKGROUND_COLOR }]}
+        />
+        {/* top */}
+        <meshBasicMaterial
+          attach="material-3"
+          args={[{ color: CUBE_BACKGROUND_COLOR }]}
+        />
+        {/* bottom */}
+
+        <positionalAudio ref={soundRef} args={[listener.current]} />
+      </mesh>
+      {/* <mesh position={[0, -1, -3]} onClick={handleClick}>
+        <boxGeometry args={[aspect * 2, 2]} />
+        <meshBasicMaterial args={[{ color: CUBE_BACKGROUND_COLOR }]} />
+      </mesh> */}
+    </>
   );
 };
 
+const ENABLE_AR = true;
+
 export function ARApp() {
   const [item, setItem] = useState<GeoARItem>();
-  const [loaded, setLoaded] = useState(true);
+  const [loaded, setLoaded] = useState(ENABLE_AR ? false : true);
   const [, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -96,6 +130,20 @@ export function ARApp() {
     }
   }, []);
 
+  if (!ENABLE_AR) {
+    return (
+      <>
+        {!loaded && <Loader onClick={handleEnterAR} />}
+        <Canvas>
+          <ambientLight />
+          <OrbitControls />
+          {item && loaded && (
+            <ImagePlane src={item.src} audioSrc={item.audio} />
+          )}
+        </Canvas>
+      </>
+    );
+  }
   return (
     <>
       {!loaded && <Loader onClick={handleEnterAR} />}
