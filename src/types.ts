@@ -4,4 +4,5 @@ export type GeoARItem = {
   lng: number;
   src: string;
   name: string;
+  audio?: string;
 };
