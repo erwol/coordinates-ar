@@ -75,4 +75,12 @@ export const AR_ITEMS: GeoARItem[] = [
     lng: -4.1506207,
     name: "valle",
   },
+  {
+    id: 11,
+    src: `${MEDIA_PREFIX}sol.png`,
+    lat: 40.416638,
+    lng: -3.7038603,
+    name: "sol",
+    audio: `${MEDIA_PREFIX}sol.mp3`,
+  },
 ];
