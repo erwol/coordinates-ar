@@ -76,34 +76,23 @@ const ImagePlane = ({ src, audioSrc }: { src: string; audioSrc?: string }) => {
   }, [audioSrc]);
 
   return (
-    <>
-      <mesh position={[0, 1, -3]} onClick={handleClick}>
-        {/* <planeGeometry args={[aspect * 2, 2]} />
-      <meshBasicMaterial map={texture} side={THREE.DoubleSide} /> */}
-        <boxGeometry args={[aspect * 2, 2]} />
-
-        {[0, 1, 4, 5].map((i) => (
-          <meshBasicMaterial key={i} attach={`material-${i}`} map={texture} />
-        ))}
-
-        <meshBasicMaterial
-          attach="material-2"
-          args={[{ color: CUBE_BACKGROUND_COLOR }]}
-        />
-        {/* top */}
-        <meshBasicMaterial
-          attach="material-3"
-          args={[{ color: CUBE_BACKGROUND_COLOR }]}
-        />
-        {/* bottom */}
-
-        <positionalAudio ref={soundRef} args={[listener.current]} />
-      </mesh>
-      {/* <mesh position={[0, -1, -3]} onClick={handleClick}>
-        <boxGeometry args={[aspect * 2, 2]} />
-        <meshBasicMaterial args={[{ color: CUBE_BACKGROUND_COLOR }]} />
-      </mesh> */}
-    </>
+    <mesh position={[0, 1, -3]} onClick={handleClick}>
+      <boxGeometry args={[aspect * 2, 2]} />
+      {[0, 1, 4, 5].map((i) => (
+        <meshBasicMaterial key={i} attach={`material-${i}`} map={texture} />
+      ))}
+      {/* top */}
+      <meshBasicMaterial
+        attach="material-2"
+        args={[{ color: CUBE_BACKGROUND_COLOR }]}
+      />
+      {/* bottom */}
+      <meshBasicMaterial
+        attach="material-3"
+        args={[{ color: CUBE_BACKGROUND_COLOR }]}
+      />
+      <positionalAudio ref={soundRef} args={[listener.current]} />
+    </mesh>
   );
 };
 
@@ -113,6 +102,20 @@ export function ARApp() {
   const [item, setItem] = useState<GeoARItem>();
   const [loaded, setLoaded] = useState(ENABLE_AR ? false : true);
   const [, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const isIOS =
+      /iPad|iPhone|iPod/.test(navigator.userAgent) &&
+      !(window as unknown as { MSStream: boolean }).MSStream;
+
+    if (isIOS) {
+      alert("loading ios");
+      const script = document.createElement("script");
+      script.src =
+        "https://launchar.app/sdk/v1?key=ZaOqCxoW8k0HFVLfttdd5rzwo8yCp7LP&redirect=true";
+      document.head.appendChild(script);
+    }
+  }, []);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -128,6 +131,8 @@ export function ARApp() {
     } catch (error) {
       console.error("Error entering AR:", error);
       setError("Error entering AR");
+      alert("error entering AR");
+      setLoaded(false);
     }
   }, []);
 
@@ -136,7 +141,6 @@ export function ARApp() {
       <>
         {!loaded && <Loader onClick={handleEnterAR} />}
         <Canvas>
-          <ambientLight />
           <OrbitControls />
           {item && loaded && (
             <ImagePlane src={item.src} audioSrc={item.audio} />
