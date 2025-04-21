@@ -7,7 +7,6 @@ import logo from "./logo.svg";
 import { GeoARItem } from "./types";
 import { createXRStore, XR } from "@react-three/xr";
 import { OrbitControls } from "@react-three/drei";
-import { isIOS } from "./isiOS";
 
 const store = createXRStore({
   hitTest: true,
@@ -103,16 +102,6 @@ export function ARApp() {
   const [item, setItem] = useState<GeoARItem>();
   const [loaded, setLoaded] = useState(ENABLE_AR ? false : true);
   const [, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (isIOS()) {
-      alert("loading ios");
-      const script = document.createElement("script");
-      script.src =
-        "https://launchar.app/sdk/v1?key=ZaOqCxoW8k0HFVLfttdd5rzwo8yCp7LP&redirect=true";
-      document.head.appendChild(script);
-    }
-  }, []);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
