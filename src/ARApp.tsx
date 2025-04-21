@@ -7,6 +7,7 @@ import logo from "./logo.svg";
 import { GeoARItem } from "./types";
 import { createXRStore, XR } from "@react-three/xr";
 import { OrbitControls } from "@react-three/drei";
+import { isIOS } from "./isiOS";
 
 const store = createXRStore({
   hitTest: true,
@@ -104,11 +105,7 @@ export function ARApp() {
   const [, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const isIOS =
-      /iPad|iPhone|iPod/.test(navigator.userAgent) &&
-      !(window as unknown as { MSStream: boolean }).MSStream;
-
-    if (isIOS) {
+    if (isIOS()) {
       alert("loading ios");
       const script = document.createElement("script");
       script.src =
