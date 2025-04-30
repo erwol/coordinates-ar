@@ -42,7 +42,7 @@ const Loader = ({ onClick }: { onClick: () => void }) => (
   </div>
 );
 
-const ImagePlane = ({ src, audioSrc }: { src: string; audioSrc?: string }) => {
+const ImagePlane = ({ src }: { src: string }) => {
 
   const texture = useLoader(TextureLoader, src);
   const aspect = texture.image.width / texture.image.height;
@@ -170,7 +170,7 @@ export function ARApp() {
             <ImagePlaneWithAudio src={item.src} audioSrc={item.audio} />
           )}
           {item && !item.audio && loaded && (
-            <ImagePlane src={item.src} audioSrc={item.audio} />
+            <ImagePlane src={item.src} />
           )}
         </XR>
       </Canvas>
