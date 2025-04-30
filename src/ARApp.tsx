@@ -167,7 +167,10 @@ export function ARApp() {
       {!loaded && <Loader onClick={handleEnterAR} />}
       <Canvas>
         <XR store={store}>
-          {item && loaded && (
+          {item && item.audio && loaded && (
+            <ImagePlaneWithAudio src={item.src} audioSrc={item.audio} />
+          )}
+          {item && !item.audio && loaded && (
             <ImagePlane src={item.src} audioSrc={item.audio} />
           )}
         </XR>
