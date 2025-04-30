@@ -48,35 +48,8 @@ const ImagePlane = ({ src, audioSrc }: { src: string; audioSrc?: string }) => {
   const texture = useLoader(TextureLoader, src);
   const aspect = texture.image.width / texture.image.height;
 
-  const listener = useRef<THREE.AudioListener>(new THREE.AudioListener());
-  const soundRef = useRef(new THREE.PositionalAudio(listener.current));
-  const audioBuffer = useLoader(THREE.AudioLoader, audioSrc || "");
-
-  useEffect(() => {
-    camera.add(listener.current);
-  }, [camera]);
-
-  useEffect(() => {
-    if (soundRef.current && audioBuffer) {
-      soundRef.current.setBuffer(audioBuffer);
-      soundRef.current.setLoop(false);
-      soundRef.current.setVolume(1);
-    }
-  }, [audioBuffer]);
-
-  const handleClick = useCallback(() => {
-    if (!audioSrc) {
-      return;
-    }
-    if (soundRef.current.isPlaying) {
-      soundRef.current.pause();
-    } else {
-      soundRef.current.play();
-    }
-  }, [audioSrc]);
-
   return (
-    <mesh position={[0, 1, -3]} onClick={handleClick}>
+    <mesh position={[0, 1, -3]}>
       <boxGeometry args={[aspect * 2, 2]} />
       {[0, 1, 4, 5].map((i) => (
         <meshBasicMaterial key={i} attach={`material-${i}`} map={texture} />
@@ -91,7 +64,6 @@ const ImagePlane = ({ src, audioSrc }: { src: string; audioSrc?: string }) => {
         attach="material-3"
         args={[{ color: CUBE_BACKGROUND_COLOR }]}
       />
-      <positionalAudio ref={soundRef} args={[listener.current]} />
     </mesh>
   );
 };
