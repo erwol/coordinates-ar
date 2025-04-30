@@ -43,7 +43,6 @@ const Loader = ({ onClick }: { onClick: () => void }) => (
 );
 
 const ImagePlane = ({ src, audioSrc }: { src: string; audioSrc?: string }) => {
-  const { camera } = useThree();
 
   const texture = useLoader(TextureLoader, src);
   const aspect = texture.image.width / texture.image.height;
