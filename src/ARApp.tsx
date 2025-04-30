@@ -124,7 +124,7 @@ const ImagePlaneWithAudio = ({ src, audioSrc }: { src: string; audioSrc?: string
 };
 
 const ENABLE_AR = true;
-const ENABLE_DEBUG_SOL = true;
+const ENABLE_DEBUG_SOL = false;
 export function ARApp() {
   const [item, setItem] = useState<GeoARItem>();
   const [loaded, setLoaded] = useState(ENABLE_AR ? false : true);
