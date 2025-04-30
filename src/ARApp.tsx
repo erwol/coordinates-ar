@@ -42,7 +42,33 @@ const Loader = ({ onClick }: { onClick: () => void }) => (
   </div>
 );
 
-const ImagePlane = ({ src, audioSrc }: { src: string; audioSrc?: string }) => {
+const ImagePlane = ({ src }: { src: string }) => {
+
+  const texture = useLoader(TextureLoader, src);
+  const aspect = texture.image.width / texture.image.height;
+
+  return (
+    <mesh position={[0, 1, -3]}>
+      <boxGeometry args={[aspect * 2, 2]} />
+      {[0, 1, 4, 5].map((i) => (
+        <meshBasicMaterial key={i} attach={`material-${i}`} map={texture} />
+      ))}
+      {/* top */}
+      <meshBasicMaterial
+        attach="material-2"
+        args={[{ color: CUBE_BACKGROUND_COLOR }]}
+      />
+      {/* bottom */}
+      <meshBasicMaterial
+        attach="material-3"
+        args={[{ color: CUBE_BACKGROUND_COLOR }]}
+      />
+    </mesh>
+  );
+};
+
+
+const ImagePlaneWithAudio = ({ src, audioSrc }: { src: string; audioSrc?: string }) => {
   const { camera } = useThree();
 
   const texture = useLoader(TextureLoader, src);
@@ -97,7 +123,7 @@ const ImagePlane = ({ src, audioSrc }: { src: string; audioSrc?: string }) => {
 };
 
 const ENABLE_AR = true;
-const ENABLE_DEBUG_SOL = true;
+const ENABLE_DEBUG_SOL = false;
 export function ARApp() {
   const [item, setItem] = useState<GeoARItem>();
   const [loaded, setLoaded] = useState(ENABLE_AR ? false : true);
@@ -129,7 +155,7 @@ export function ARApp() {
         <Canvas>
           <OrbitControls />
           {item && loaded && (
-            <ImagePlane src={item.src} audioSrc={item.audio} />
+            <ImagePlane src={item.src} />
           )}
         </Canvas>
       </>
@@ -140,8 +166,11 @@ export function ARApp() {
       {!loaded && <Loader onClick={handleEnterAR} />}
       <Canvas>
         <XR store={store}>
-          {item && loaded && (
-            <ImagePlane src={item.src} audioSrc={item.audio} />
+          {item && item.audio && loaded && (
+            <ImagePlaneWithAudio src={item.src} audioSrc={item.audio} />
+          )}
+          {item && !item.audio && loaded && (
+            <ImagePlane src={item.src} />
           )}
         </XR>
       </Canvas>
