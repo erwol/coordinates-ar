@@ -155,7 +155,7 @@ export function ARApp() {
         <Canvas>
           <OrbitControls />
           {item && loaded && (
-            <ImagePlane src={item.src} audioSrc={item.audio} />
+            <ImagePlane src={item.src} />
           )}
         </Canvas>
       </>
